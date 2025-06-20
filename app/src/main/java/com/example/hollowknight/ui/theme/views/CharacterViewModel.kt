@@ -12,39 +12,39 @@ import kotlinx.coroutines.launch
 import okio.IOException
 import retrofit2.HttpException
 
-sealed interface CharmUiState{
-    object Loading: CharmUiState
+sealed interface CharacterUiState{
+    object Loading: CharacterUiState
 
-    data class Sucess (val charm : List<Character> ): CharmUiState
+    data class Success (val characters : List<Character> ): CharacterUiState
 
-    object Error: CharmUiState
+    object Error: CharacterUiState
 }
 
-class CharmViewModel: ViewModel(){
+class CharacterViewModel: ViewModel(){
 
-    private var _uiState : MutableStateFlow<CharmUiState> = MutableStateFlow(CharmUiState.Loading)
-    val uiState: StateFlow<CharmUiState> = _uiState.asStateFlow()
+    private var _uiState : MutableStateFlow<CharacterUiState> = MutableStateFlow(CharacterUiState.Loading)
+    val uiState: StateFlow<CharacterUiState> = _uiState.asStateFlow()
 
     init{
-        getCharms()
+        getCharacter()
     }
 
-    private fun getCharms(){
+    private fun getCharacter(){
         viewModelScope.launch {
             try {
-                _uiState.value = CharmUiState.Sucess(
-                    OpenHollowKnightAPI.retrofitService.getCharms()
+                _uiState.value = CharacterUiState.Success(
+                    OpenHollowKnightAPI.retrofitService.getCharacter()
                 )
                 Log.d("CharmViewModel", "Charms carregados com sucesso")
             } catch(e: IOException) {
                 Log.e("CharmViewModel", "Erro de IO: ${e.message}", e)
-                _uiState.value = CharmUiState.Error
+                _uiState.value = CharacterUiState.Error
             } catch (e: HttpException) {
                 Log.e("CharmViewModel", "Erro HTTP: ${e.message}", e)
-                _uiState.value = CharmUiState.Error
+                _uiState.value = CharacterUiState.Error
             } catch (e: Exception) {
                 Log.e("CharmViewModel", "Erro inesperado: ${e.message}", e)
-                _uiState.value = CharmUiState.Error
+                _uiState.value = CharacterUiState.Error
             }
         }
     }

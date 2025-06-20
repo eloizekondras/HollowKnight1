@@ -23,7 +23,7 @@ private val retrofit: Retrofit = Retrofit.Builder()
 
 interface OpenHollowKnightAPIService{
     @GET("api/characters")
-    suspend fun getCharms(): List<Character>
+    suspend fun getCharacter(): List<Character>
 }
 
 object OpenHollowKnightAPI {

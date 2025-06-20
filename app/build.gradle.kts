@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.implementation
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -59,7 +61,9 @@ dependencies {
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
-
+    // Navigation Compose Material3
+    implementation ("androidx.navigation:navigation-compose:2.7.3")
+    implementation ("com.google.code.gson:gson:2.10.1")
     // Compose
     implementation("androidx.activity:activity-compose:1.8.2")
     implementation("androidx.compose.ui:ui:1.6.5")
@@ -82,6 +86,7 @@ dependencies {
     // Debug / Preview
     debugImplementation("androidx.compose.ui:ui-tooling:1.6.5")
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.5")
+
 
     // Testes
     testImplementation("junit:junit:4.13.2")
