@@ -23,32 +23,38 @@ fun HollowKnightApp() {
     val navController = rememberNavController()
     val viewModel: CharacterViewModel = viewModel()
 
-    Surface(color = MaterialTheme.colorScheme.background) {
-        NavHost(
-            navController = navController,
-            startDestination = AppScreens.CharacterList.name
-        ) {
-            composable(AppScreens.CharacterList.name) {
-                CharacterScreen(characterViewModel = viewModel,
-                    onCharacterClick = { character ->
-
-                        val characterJson = URLEncoder.encode(Gson().toJson(character), StandardCharsets.UTF_8.toString())
-                        navController.navigate("${AppScreens.CharacterDetail.name}/$characterJson")
-                    }
-                )
-            }
-            composable(
-                route = "${AppScreens.CharacterDetail.name}/{character}",
-                arguments = listOf(navArgument("character") { type = NavType.StringType })
-            ) { backStackEntry ->
-                val characterJson = backStackEntry.arguments?.getString("character")
-                val character = characterJson?.let {
-                    Gson().fromJson(URLDecoder.decode(it, StandardCharsets.UTF_8.toString()), Character::class.java)
-                }
-                if (character != null) {
-                    CharacterDetailScreen(character = character,
-                        onBack = { navController.popBackStack() }
+    HollowKnightTheme {
+        Surface(color = MaterialTheme.colorScheme.background) {
+            NavHost(
+                navController = navController,
+                startDestination = AppScreens.CharacterList.name
+            ) {
+                composable(AppScreens.CharacterList.name) {
+                    CharacterScreen(
+                        characterViewModel = viewModel,
+                        onCharacterClick = { character ->
+                            val characterJson = URLEncoder.encode(
+                                Gson().toJson(character),
+                                StandardCharsets.UTF_8.toString()
+                            )
+                            navController.navigate("${AppScreens.CharacterDetail.name}/$characterJson")
+                        }
                     )
+                }
+                composable(
+                    route = "${AppScreens.CharacterDetail.name}/{character}",
+                    arguments = listOf(navArgument("character") { type = NavType.StringType })
+                ) { backStackEntry ->
+                    val characterJson = backStackEntry.arguments?.getString("character")
+                    val character = characterJson?.let {
+                        Gson().fromJson(URLDecoder.decode(it, StandardCharsets.UTF_8.toString()), Character::class.java)
+                    }
+                    if (character != null) {
+                        CharacterDetailScreen(
+                            character = character,
+                            onBack = { navController.popBackStack() }
+                        )
+                    }
                 }
             }
         }
